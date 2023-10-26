@@ -6,58 +6,93 @@ using namespace std;
 
 int INF = numeric_limits<int>::max();
 
-void bellman(vector<vector<int>> grafo){
-    int N = grafo.size();
-    vector<long long> minimos(N,INF);
-    minimos[0] = 0;
-    bool hayCambios = true;
-    while(hayCambios){
+struct triple {
+    long long latencia;
+    int PC1;
+    int PC2;
 
-
-        hayCambios = false;
-        vector<long long> minimosTemp = minimos;
-        for(int i = 1; i<minimosTemp.size();i++){
-            long long posibleNuevo = INF;
-            for(int j = 0; j<i+1; j++){
-                long long TEMP = minimos[j]+grafo[j][i];
-                posibleNuevo = min(posibleNuevo,TEMP);
-            }
-            if(posibleNuevo != minimosTemp[i]){
-                hayCambios = true;
-                minimos[i] = posibleNuevo;
-            }
-
+    bool operator<(const triple& other) const {
+        if (latencia < other.latencia) {
+            return true;
+        } else {
+            return false;
         }
     }
-    int K = minimos.size()/4;
-    long long ceroPuentes = minimos[K - 1];
-    long long unPuente = minimos[2*K - 1];
-    long long dosPuentes = minimos[3*K - 1];
-    long long tresPuentes = minimos[4*K - 1];
-    cout << min(ceroPuentes,min(unPuente,min(dosPuentes,tresPuentes))) << endl;
+
+};
+
+struct DSU {
+    vector<int> padre;
+    vector<int> tam;
+
+    DSU(int n){
+        padre = vector<int>(n);
+        tam = vector<int>(n,0);
+        for(int i = 0; i<n;i++){
+            padre[i] = i;
+        }
+    }
+    int find(int v){
+        if (padre[v] != v){
+            padre[v] = find(padre[v]);
+        }
+        return padre[v];
+    }
+
+    void unite (int a, int b){
+        a = find(a);
+        b = find(b);
+        if(tam[a] < tam[b]){
+            swap(a,b);
+        }
+        padre[b] = a;
+        tam[a] = tam[a]+1;
+    }
+
+};
+
+
+void distConexion(vector<triple> latencias, int cantPC){
+    sort(latencias.begin(),latencias.end());
+    int a = 0;
+    vector<vector<long long>> distancias(cantPC,vector<long long>(cantPC,INF));
+    vector<bool> agregado(cantPC,false);
+    DSU DSU(cantPC);
+    for(int i = 0; i < latencias.size(); i++){
+        triple latActual = latencias[i];
+        if(!agregado[latActual.PC1] || !agregado[latActual.PC2]){
+            agregado[latActual.PC1] = true;
+            agregado[latActual.PC2] = true;
+            distancias[latActual.PC1][latActual.PC2] = latActual.latencia;
+            distancias[latActual.PC2][latActual.PC1] = latActual.latencia;
+        }
+        else{
+            if(DSU.find(latActual.PC1) != DSU.find(latActual.PC2)){
+                distancias[latActual.PC1][latActual.PC2] = latActual.latencia;
+                distancias[latActual.PC2][latActual.PC1] = latActual.latencia;
+            }
+            else{
+                //aca tengo que chequear que como ya está la distancia, la nueva tenga sentido
+            }
+        }
+
+    }
 }
 
+
 int main() {
-    int cantTest, cantSalones, cantTuneles, entrada, salida;
-    cin >>cantTest;
+    int cantTest, cantPC, latencia;
+    cin >> cantTest;
     for(int i = 0; i < cantTest; i++){
-        cin >> cantSalones >> cantTuneles;
-        vector<vector<int>> caminos((cantSalones+1)*4, vector<int>((cantSalones+1)*4,INF));
-        for(int j = 0; j < caminos.size()-1;j++){
-            caminos[j][j+1] = 1;
-            caminos[j][j] = 0;
+        cin >> cantPC;
+        vector<triple> latencias;
+        for(int j = 0; j < cantPC; j++){
+            for(int k = 0; k < j; k++){
+                cin >> latencia;
+                latencias.push_back({latencia,j,k});
+            }
         }
-
-        caminos[caminos.size()-1][caminos.size()-1] = 0;
-
-        int N = cantSalones + 1;
-        for(int k = 0; k < cantTuneles; k++){
-            cin >> entrada >> salida;
-            caminos[entrada][salida+N] = 2;
-            caminos[entrada+N][salida + 2*N] = 2;
-            caminos[entrada + 2*N][salida + 3*N] = 2;
-        }
-        bellman(caminos);
+        distConexion(latencias, cantPC);
     }
     return 0;
 }

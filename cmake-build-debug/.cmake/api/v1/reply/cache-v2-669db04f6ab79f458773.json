@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/Users/agush/CLionProjects/TP3_Ejercicio_1/cmake-build-debug"
+			"value" : "e:/Users/agush/CLionProjects/TP3_Ejercicio_2/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_1/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_2/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_1"
+			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_2"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1275,7 +1275,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_1/cmake-build-debug"
+			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_2/cmake-build-debug"
 		},
 		{
 			"name" : "untitled1_IS_TOP_LEVEL",
@@ -1299,7 +1299,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_1"
+			"value" : "E:/Users/agush/CLionProjects/TP3_Ejercicio_2"
 		}
 	],
 	"kind" : "cache",
