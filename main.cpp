@@ -2,6 +2,7 @@
 #include <vector>
 #include <limits>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 int INF = numeric_limits<int>::max();
@@ -51,11 +52,9 @@ struct DSU {
 
 };
 
-
 void distConexion(vector<triple> latencias, int cantPC){
     sort(latencias.begin(),latencias.end());
-    int a = 0;
-    vector<vector<long long>> distancias(cantPC,vector<long long>(cantPC,INF));
+    vector<vector<pair<int,int>>> grafo(cantPC);
     vector<bool> agregado(cantPC,false);
     DSU DSU(cantPC);
     for(int i = 0; i < latencias.size(); i++){
@@ -63,19 +62,20 @@ void distConexion(vector<triple> latencias, int cantPC){
         if(!agregado[latActual.PC1] || !agregado[latActual.PC2]){
             agregado[latActual.PC1] = true;
             agregado[latActual.PC2] = true;
-            distancias[latActual.PC1][latActual.PC2] = latActual.latencia;
-            distancias[latActual.PC2][latActual.PC1] = latActual.latencia;
+            grafo[latActual.PC1].push_back({latActual.PC2,latActual.latencia});
+            grafo[latActual.PC2].push_back({latActual.PC1,latActual.latencia});
+            DSU.unite(latActual.PC1,latActual.PC2);
         }
         else{
             if(DSU.find(latActual.PC1) != DSU.find(latActual.PC2)){
-                distancias[latActual.PC1][latActual.PC2] = latActual.latencia;
-                distancias[latActual.PC2][latActual.PC1] = latActual.latencia;
+                grafo[latActual.PC1].push_back({latActual.PC2,latActual.latencia});
+                grafo[latActual.PC2].push_back({latActual.PC1,latActual.latencia});
+                DSU.unite(latActual.PC1,latActual.PC2);
             }
             else{
-                //aca tengo que chequear que como ya está la distancia, la nueva tenga sentido
+
             }
         }
-
     }
 }
 
