@@ -146,7 +146,13 @@ void distConexion(vector<triple> latencias, int cantPC){
             }
         }
     }
-    int a = 0;
+    cout << "POSIBLE" << endl;
+    for (int i = 0; i < cantPC; ++i) {
+        for (int j = 0; j < cantPC; ++j) {
+            cout << distancias[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
 
@@ -164,6 +170,7 @@ int main() {
         }
         distConexion(latencias, cantPC);
     }
+
     return 0;
 }
 
